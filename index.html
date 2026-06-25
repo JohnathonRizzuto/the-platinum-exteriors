@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Always open at the top (hero) — don't let the browser restore the last scroll position -->
+<script>if('scrollRestoration' in history)history.scrollRestoration='manual';</script>
 
 <!-- ============ SEO ============ -->
 <title>Platinum Construction Group | Roofing &amp; Exteriors in Batavia, IL</title>
@@ -536,6 +538,13 @@
     </div>
     <div class="reveal">
       <form id="quoteForm" class="lead-form" onsubmit="return submitLead(event)">
+        <!-- Web3Forms: leads land in platinumincoffice@gmail.com. PASTE the real access key below -->
+        <!-- (free, 2 min: go to web3forms.com, enter platinumincoffice@gmail.com, the key is emailed there). -->
+        <input type="hidden" name="access_key" value="PASTE-WEB3FORMS-ACCESS-KEY-HERE" />
+        <input type="hidden" name="subject" value="New quote request from your website" />
+        <input type="hidden" name="from_name" value="Platinum Construction Group Website" />
+        <!-- honeypot: real people leave this blank; bots fill it and get rejected -->
+        <input type="checkbox" name="botcheck" style="display:none !important" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <div class="lead-fields">
           <h3>Request your free quote</h3>
           <p class="lf-note">Takes under a minute. We reply within 24 hours.</p>
@@ -555,6 +564,7 @@
           <textarea name="notes" rows="3" placeholder="Extra notes — tell us exactly what you need"></textarea>
           <button class="btn btn-primary" type="submit">Get My Free Quote →</button>
           <div class="lf-or">or call <a href="tel:+16309730448">(630) 973-0448</a></div>
+          <p class="lf-consent" style="font-size:.72rem;line-height:1.45;color:var(--faint);margin-top:12px">By submitting, you agree to be contacted by phone, text, or email about your request. Msg &amp; data rates may apply.</p>
         </div>
         <div class="lead-ok">
           <div class="ck"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
@@ -947,12 +957,30 @@
   const observeReveals = () => document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
   observeReveals();
 
-  // Lead form (demo) — works for any .lead-form
-  function submitLead(e){
+  // Lead form — posts to Web3Forms, leads land in platinumincoffice@gmail.com
+  async function submitLead(e){
     e.preventDefault();
     const f = e.target.closest('form');
-    f.querySelector('.lead-fields').style.display = 'none';
-    f.querySelector('.lead-ok').classList.add('show');
+    const btn = f.querySelector('button[type=submit]');
+    const label = btn ? btn.textContent : '';
+    if(btn){ btn.disabled = true; btn.textContent = 'Sending...'; }
+    try{
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method:'POST',
+        headers:{ 'Accept':'application/json' },
+        body: new FormData(f)
+      });
+      const data = await res.json();
+      if(data.success){
+        f.querySelector('.lead-fields').style.display = 'none';
+        f.querySelector('.lead-ok').classList.add('show');
+      } else {
+        throw new Error(data.message || 'submit failed');
+      }
+    } catch(err){
+      if(btn){ btn.disabled = false; btn.textContent = label; }
+      alert("Sorry — something went wrong sending your request. Please call (630) 973-0448 and we'll take care of you right away.");
+    }
     return false;
   }
 
