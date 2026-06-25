@@ -173,9 +173,10 @@
   .lead-form .eyebrow{margin-bottom:6px}
   .lead-form h3{font-size:1.62rem;margin:6px 0 6px;font-weight:600;font-family:var(--display)}
   .lf-note{color:var(--muted);font-size:.92rem;margin-bottom:20px}
-  .lead-form input,.lead-form select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:14px 15px;color:var(--ink);font-family:var(--font);font-size:.97rem;margin-bottom:12px;transition:border-color .2s,background .2s}
-  .lead-form input::placeholder{color:var(--faint)}
-  .lead-form input:focus,.lead-form select:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.09)}
+  .lead-form input,.lead-form select,.lead-form textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:14px 15px;color:var(--ink);font-family:var(--font);font-size:.97rem;margin-bottom:12px;transition:border-color .2s,background .2s}
+  .lead-form textarea{resize:vertical;min-height:84px;line-height:1.5}
+  .lead-form input::placeholder,.lead-form textarea::placeholder{color:var(--faint)}
+  .lead-form input:focus,.lead-form select:focus,.lead-form textarea:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.09)}
   .lead-form select{appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239BA4B6' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center}
   .lead-form option{color:#111}
   .lead-form button[type=submit]{width:100%;margin-top:4px}
@@ -542,7 +543,7 @@
           <input name="phone" type="tel" required placeholder="Phone number" />
           <input name="email" type="email" placeholder="Email (optional)" />
           <select name="service" required>
-            <option value="" disabled selected>What do you need?</option>
+            <option value="" disabled selected>Type of work</option>
             <option>Roof Repair</option>
             <option>Roof Replacement</option>
             <option>Storm / Insurance Claim</option>
@@ -551,6 +552,7 @@
             <option>Solar</option>
             <option>Something else</option>
           </select>
+          <textarea name="notes" rows="3" placeholder="Extra notes — tell us exactly what you need"></textarea>
           <button class="btn btn-primary" type="submit">Get My Free Quote →</button>
           <div class="lf-or">or call <a href="tel:+16309730448">(630) 973-0448</a></div>
         </div>
