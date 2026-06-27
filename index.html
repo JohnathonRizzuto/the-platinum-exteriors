@@ -900,59 +900,9 @@
   const onScroll = () => hdr.classList.toggle('scrolled', window.scrollY > 40);
   onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
 
-  // Smooth section "settle" — gentle, buffered glide to the nearest section.
-  // Vanilla (no library). CSS scroll-snap can't control speed/easing, so we tween it ourselves.
-  // Desktop pointers + motion-safe only; tall sections + mid-section stops are left alone.
-  (function(){
-    const ok = window.matchMedia('(prefers-reduced-motion: no-preference)').matches
-            && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if(!ok) return;
-    const sections = [...document.querySelectorAll('.hero, .sec')];
-    const de = document.documentElement;
-    const headerH = parseInt(getComputedStyle(de).getPropertyValue('--header-h')) || 80;
-    const DURATION = 700;   // glide length (ms) — smooth, not snappy
-    const BUFFER   = 160;   // pause after you stop scrolling (ms) — lets the eyes settle
-    const THRESHOLD = 0.35; // only pull in if a section start is within 35% of the viewport
-    const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; // easeInOutCubic
-    let timer = null, animating = false, cancel = false;
-    function tween(toY){
-      const fromY = window.scrollY, dist = toY - fromY;
-      if(Math.abs(dist) < 2) return;
-      animating = true; cancel = false;
-      const prev = de.style.scrollBehavior; de.style.scrollBehavior = 'auto'; // our rAF owns the motion
-      let t0 = null;
-      function step(ts){
-        if(cancel){ animating = false; de.style.scrollBehavior = prev; return; }
-        if(t0 === null) t0 = ts;
-        const p = Math.min((ts - t0)/DURATION, 1);
-        window.scrollTo(0, Math.round(fromY + dist*ease(p)));
-        if(p < 1) requestAnimationFrame(step);
-        else { animating = false; de.style.scrollBehavior = prev; }
-      }
-      requestAnimationFrame(step);
-    }
-    function settle(){
-      if(animating) return;
-      const vh = window.innerHeight, fitH = vh - headerH, TH = vh * THRESHOLD;
-      let best = null, bestD = Infinity;
-      for(const s of sections){
-        const r = s.getBoundingClientRect();
-        const delta = r.top - headerH;          // scroll move needed to align this section's top
-        const d = Math.abs(delta);
-        if(d <= 2 || d > TH) continue;           // already aligned, or not close enough to a boundary
-        // NEVER pull UP to a section that's taller than the screen — its bottom is still below the
-        // fold, so aligning the top would hide content the user is scrolling toward. Leave tall
-        // sections free; the NEXT section will still pull them forward once they reach the end.
-        if(delta < 0 && r.height > fitH + 1) continue;
-        if(d < bestD){ bestD = d; best = s; }
-      }
-      if(best) tween(window.scrollY + best.getBoundingClientRect().top - headerH);
-    }
-    window.addEventListener('scroll', () => { if(animating) return; clearTimeout(timer); timer = setTimeout(settle, BUFFER); }, {passive:true});
-    // let the user take back control instantly
-    ['wheel','touchstart','pointerdown','keydown'].forEach(ev =>
-      window.addEventListener(ev, () => { if(animating) cancel = true; }, {passive:true}));
-  })();
+  // Auto section-snap "settle" feature REMOVED (2026-06-26) per request — it kept gliding
+  // the page back to the nearest section after you stopped (the "keeps scrolling up at the
+  // bottom" bug). Scrolling is now plain native scrolling and stays where you leave it.
 
   // Menu overlay
   const overlay = document.getElementById('menuOverlay');
