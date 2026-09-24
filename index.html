@@ -441,6 +441,51 @@
     .foot-grid{grid-template-columns:1fr}
     .brand-word{font-size:1.02rem}
   }
+  /* ---------- See your new roof (visualizer) ---------- */
+  .vz{background:var(--bg-2);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .vz .wrap{max-width:1480px}
+  .vz-grid{display:grid;grid-template-columns:minmax(0,2.35fr) minmax(300px,1fr);gap:26px;align-items:start}
+  /* full screen: the house as big as the screen allows, colours still beside it */
+  .vz-grid:fullscreen{background:var(--bg);padding:22px;grid-template-columns:minmax(0,1fr) 360px;align-items:center;overflow:auto}
+  .vz-grid:fullscreen .vz-frame{width:min(100%,calc((100vh - 110px) * 3072 / 2040));margin:0 auto}
+  .vz-grid:fullscreen .vz-tools{justify-content:center}
+  .vz-grid:fullscreen .vz-panel{max-height:calc(100vh - 44px);overflow:auto}
+  .vz-frame{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#1a1f2a;aspect-ratio:3072/2040}
+  .vz-frame canvas{display:block;width:100%;height:100%;opacity:0;transition:opacity .5s}
+  .vz.ready .vz-frame canvas{opacity:1}
+  .vz-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.92rem}
+  .vz.ready .vz-loading{display:none}
+  .vz-now{position:absolute;left:14px;bottom:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .vz-now span{background:rgba(11,14,20,.78);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:100px;padding:7px 13px;font-size:.8rem;color:var(--muted)}
+  .vz-now b{color:var(--ink);font-weight:600;margin-left:4px}
+  .vz-tools{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .vz-tools .btn{padding:11px 18px;font-size:.88rem}
+  .vz-hold.on{background:var(--accent);color:#1a1304}
+  .vz-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .vz-group+.vz-group{margin-top:22px;padding-top:20px;border-top:1px solid var(--line-2)}
+  .vz-h{font-family:var(--display);font-size:1.35rem;font-weight:600;margin-bottom:12px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .vz-oc{font-family:var(--font);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(227,168,76,.35);padding-bottom:1px;transition:color .2s,border-color .2s}
+  .vz-oc:hover{color:var(--accent-2);border-color:var(--accent-2)}
+  .vz .sec-head p a{color:var(--accent-2);text-decoration:underline;text-underline-offset:3px}
+  .vz-h small{font-family:var(--font);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .vz-sws{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .vz-sw{display:flex;align-items:center;gap:10px;text-align:left;cursor:pointer;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:8px 10px;color:var(--ink);font-family:var(--font);font-size:.86rem;transition:border-color .2s,background .2s,transform .2s}
+  .vz-sw:hover{border-color:rgba(255,255,255,.28);transform:translateY(-1px)}
+  .vz-sw i{flex:none;width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 -6px 10px rgba(0,0,0,.25)}
+  .vz-sw.on{border-color:var(--accent);background:rgba(227,168,76,.1)}
+  .vz-sw.on span{color:var(--accent-2);font-weight:600}
+  .vz-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(5,7,11,.72);backdrop-filter:blur(5px)}
+  .vz-modal[hidden]{display:none}
+  .vz-modal-card{position:relative;width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow:auto;animation:vzPop .25s ease}
+  @keyframes vzPop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+  .vz-modal .lead-form{background:var(--bg-2)}
+  .vz-modal-x{position:absolute;top:12px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font-size:1.3rem;line-height:1;cursor:pointer}
+  .vz-modal-x:hover{border-color:var(--accent);color:var(--accent)}
+  .vz-cta{width:100%;margin-top:24px}
+  .vz-note{margin-top:12px;font-size:.8rem;color:var(--faint);line-height:1.55}
+  .vz.failed .vz-loading{display:flex}
+  @media (max-width:960px){ .vz-grid{grid-template-columns:1fr} }
+  @media (max-width:520px){ .vz-now{left:8px;bottom:8px} .vz-now span{font-size:.72rem;padding:5px 10px} }
 </style>
 </head>
 <body id="top">
@@ -526,6 +571,7 @@
       <div class="hero-cta">
         <a href="#quote" class="btn btn-primary">Get My Free Quote →</a>
         <a href="tel:+16309730448" class="btn btn-ghost"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call (630) 973-0448</a>
+        <a href="#visualizer" class="btn btn-ghost"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>See Your New Roof</a>
       </div>
       <div class="hero-trust">
         <div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> GAF Certified</div>
@@ -605,6 +651,78 @@
 </div>
 
 <!-- ============ WHY US BAND (image: home1) ============ -->
+<!-- ================= SEE YOUR NEW ROOF (visualizer) ================= -->
+<section class="sec vz" id="visualizer">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">See Your New Roof</span>
+      <h2>Pick a roof. Pick a siding. <em>See it on a real home.</em></h2>
+      <p>Tap a color and watch it go on, one course at a time, just like on install day. Roof colors are the full <a href="https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration" target="_blank" rel="noopener">Owens Corning Duration&reg;</a> lineup, which we install as an Owens Corning Preferred Contractor.</p>
+    </div>
+    <div class="vz-grid">
+      <div class="vz-stage">
+        <div class="vz-frame">
+          <canvas id="vzCanvas" width="2048" height="1360" aria-label="A house showing the roof and siding colors you picked"></canvas>
+          <div class="vz-loading">Loading the house&hellip;</div>
+          <div class="vz-now"><span>Roof <b id="vzRoofName">Estate Gray</b></span><span>Siding <b id="vzSideName">Light Gray</b></span></div>
+        </div>
+        <div class="vz-tools">
+          <button type="button" class="btn btn-ghost vz-hold" id="vzHold">Hold to see the before</button>
+          <button type="button" class="btn btn-ghost" id="vzReset">Start over</button>
+          <button type="button" class="btn btn-ghost" id="vzFull"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg><span>Full screen</span></button>
+        </div>
+      </div>
+      <div class="vz-panel">
+        <div class="vz-group">
+          <div class="vz-h">Roof <a class="vz-oc" href="https://www.owenscorning.com/en-us/roofing/shingles/trudefinition-duration" target="_blank" rel="noopener">Owens Corning Duration&reg; <span aria-hidden="true">&#8599;</span></a></div>
+          <div class="vz-sws" id="vzRoofs"></div>
+        </div>
+        <div class="vz-group">
+          <div class="vz-h">Siding</div>
+          <div class="vz-sws" id="vzSidings"></div>
+        </div>
+        <a href="#quote" class="btn btn-primary vz-cta" id="vzQuote">Get a free quote on this look &rarr;</a>
+        <p class="vz-note">Colors on a screen are close, not exact. We bring real shingle and siding samples to your home before you choose.</p>
+      </div>
+      <!-- quote pop-up, lives inside the grid so it still shows in full screen -->
+      <div class="vz-modal" id="vzModal" hidden>
+        <div class="vz-modal-card" role="dialog" aria-modal="true" aria-labelledby="vzModalTitle">
+          <button type="button" class="vz-modal-x" id="vzModalX" aria-label="Close">&times;</button>
+          <form class="lead-form" onsubmit="return submitLead(event)">
+            <input type="hidden" name="access_key" value="3da2dcc3-6a1e-4bb4-9faf-e81890631669" />
+            <input type="hidden" name="subject" value="New quote request from your website (See Your New Roof)" />
+            <input type="hidden" name="from_name" value="Platinum Construction Group Website" />
+            <input type="checkbox" name="botcheck" style="display:none !important" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="lead-fields">
+              <h3 id="vzModalTitle">Get a free quote on this look</h3>
+              <p class="lf-note">Takes under a minute. We reply within 24 hours.</p>
+              <input name="name" type="text" required placeholder="Full name" aria-label="Full name" autocomplete="name" />
+              <input name="phone" type="tel" required placeholder="Phone number" aria-label="Phone number" autocomplete="tel" />
+              <input name="email" type="email" placeholder="Email (optional)" aria-label="Email address (optional)" autocomplete="email" />
+              <select name="service" required aria-label="Type of work needed">
+                <option value="" disabled>Type of work</option>
+                <option selected>Roof Replacement</option>
+                <option>Siding</option>
+                <option>Roof &amp; Siding</option>
+                <option>Something else</option>
+              </select>
+              <textarea name="notes" rows="3" aria-label="Your notes" id="vzModalNotes"></textarea>
+              <button class="btn btn-primary" type="submit">Get My Free Quote &rarr;</button>
+              <div class="lf-or">or call <a href="tel:+16309730448">(630) 973-0448</a></div>
+              <p class="lf-consent" style="font-size:.72rem;line-height:1.45;color:var(--faint);margin-top:12px">By submitting, you agree to be contacted by phone, text, or email about your request. Msg &amp; data rates may apply.</p>
+            </div>
+            <div class="lead-ok">
+              <div class="ck"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <h3>Thanks, we've got it!</h3>
+              <p class="lf-note" style="margin-top:8px">A member of the Platinum team will reach out within 24 hours about the look you picked. Need us sooner? Call <a href="tel:+16309730448" style="color:var(--accent)">(630) 973-0448</a>.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec band">
   <div class="wrap band-grid">
     <div class="band-photo tilt reveal">
@@ -1059,5 +1177,6 @@
     setTimeout(showPoster, 2500);
   })();
 </script>
+<script src="/visualizer.js" defer></script>
 </body>
 </html>
